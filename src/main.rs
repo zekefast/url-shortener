@@ -6,7 +6,8 @@ mod utils;
 
 use crate::prelude::*;
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     println!("Hello, world!");
 
     Ok(())
