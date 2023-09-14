@@ -3,7 +3,7 @@
 mod error;
 mod prelude;
 mod utils;
-mod api;
+mod web;
 
 use std::{
     net::SocketAddr,
@@ -32,10 +32,7 @@ async fn main() -> Result<()> {
 
     let listen_address = SocketAddr::from((DEFAULT_LISTEN_HOST, DEFAULT_LISTEN_PORT));
 
-    let routes_api = Router::new();
-
-    let routes_all = Router::new()
-        .nest("/api", routes_api);
+    let routes_all = web::routes();
 
     axum::Server::bind(&listen_address)
         .serve(routes_all.into_make_service())
