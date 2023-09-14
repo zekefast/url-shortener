@@ -8,6 +8,10 @@ mod api;
 use std::net::SocketAddr;
 use axum::handler::HandlerWithoutStateExt;
 use axum::Router;
+
+use dotenvy::dotenv;
+
+
 use crate::prelude::*;
 
 const DEFAULT_LISTEN_PORT: u16 = 8080;
@@ -15,6 +19,8 @@ const DEFAULT_LISTEN_HOST: [u8; 4] = [127, 0, 0, 1];
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    dotenv().expect("failed to load .env");
+
     let listen_address = SocketAddr::from((DEFAULT_LISTEN_HOST, DEFAULT_LISTEN_PORT));
 
     let routes_api = Router::new();
