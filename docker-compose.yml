@@ -1,0 +1,31 @@
+services:
+  database:
+    image: postgres:15.4-alpine
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      #- ./tmp/db_data/:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      timeout: 1s
+      retries: 120
+    ports:
+      - 5432:5432
+    # command: ["postgres", "-c", "log_statement=all"]
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.49
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - 16686:16686
+      - 4317:4317
+
+volumes:
+  postgres-data: {}
+  cargo-cache:
+  target-cache:
+  index:
