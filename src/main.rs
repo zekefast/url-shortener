@@ -4,6 +4,7 @@ mod error;
 mod prelude;
 mod utils;
 mod web;
+mod shortened_url;
 
 use std::{
     net::SocketAddr,
