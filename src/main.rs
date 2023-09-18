@@ -9,6 +9,7 @@ use std::{
     net::SocketAddr,
     time::Duration,
 };
+use axum::extract::FromRef;
 use axum::handler::HandlerWithoutStateExt;
 use axum::Router;
 
@@ -24,6 +25,19 @@ use crate::prelude::*;
 const DEFAULT_LISTEN_PORT: u16 = 8080;
 const DEFAULT_LISTEN_HOST: [u8; 4] = [127, 0, 0, 1];
 
+
+
+#[derive(Clone)]
+pub struct ApplicationState {
+    pool: PgPool,
+}
+
+impl FromRef<ApplicationState> for PgPool {
+    fn from_ref(state: &ApplicationState) -> PgPool {
+        state.pool.clone()
+    }
+}
+
 #[tokio::main]
 async fn main() -> Result<()> {
     dotenv().expect("failed to load .env");
@@ -32,7 +46,12 @@ async fn main() -> Result<()> {
 
     let listen_address = SocketAddr::from((DEFAULT_LISTEN_HOST, DEFAULT_LISTEN_PORT));
 
-    let routes_all = web::routes();
+    let state = ApplicationState {
+        pool,
+    };
+
+    let routes_all = web::routes()
+        .with_state(state);
 
     axum::Server::bind(&listen_address)
         .serve(routes_all.into_make_service())

@@ -9,7 +9,7 @@ use axum::routing::get;
 
 use prelude::Result;
 
-pub fn routes() -> Router {
+pub fn routes() -> prelude::Router {
     Router::new()
         .nest("/api", api::routes())
         .route("/:hash", get(redirect))
