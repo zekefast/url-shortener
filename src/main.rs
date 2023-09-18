@@ -5,6 +5,7 @@ mod prelude;
 mod utils;
 mod web;
 mod service;
+mod model;
 mod shortened_url;
 
 use std::{
