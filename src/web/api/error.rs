@@ -2,9 +2,11 @@ use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use serde::Serialize;
 
-#[derive(thiserror::Error, Debug, Clone, Serialize)]
-#[serde(tag = "type", content = "data")]
+#[derive(thiserror::Error, Debug, Clone/*, Serialize*/)]
+//#[serde(tag = "type", content = "data")]
 pub enum Error {
+    #[error(transparent)]
+    InvalidUrl(#[from] url::ParseError),
 }
 
 impl Error {
